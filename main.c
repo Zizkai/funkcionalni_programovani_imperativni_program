@@ -3,7 +3,7 @@
 
 
 
-
+// Sturktura stromu, obsahuje cislo, znamenko, ukazatel na svého otce, ukazatel na levého a pravého syna
 typedef struct STROM{
     int cislo;
     char znamenko;
@@ -11,7 +11,7 @@ typedef struct STROM{
     struct STROM * PSyn;
     struct STROM * Otec;
 }strom;
-
+// struktura prefix je pomocnou strukturou, která slouží k lepší editaci vstupu.
 typedef struct Prefix{
     char znamenko;
     int cislo;
@@ -23,6 +23,7 @@ void UkladaniDoStromu();
 void vypisL();
 void vypisR();
 
+// pøevádí vstup, který má podobu pole znakù na pole datového typu prefix. Funkce vrací ukazatel na pole typu prefix
 prefix * poleDoPrefix(char * pole , int k){
         int i = 0;
         prefix * vstup = malloc(sizeof(prefix)*k);
@@ -41,7 +42,7 @@ prefix * poleDoPrefix(char * pole , int k){
     }
 
 
-
+//pomocná funkce ZapisDoLeva, také se zde jedná o èásteènou rekurzi. Staví pravou èást stromu.
 void ZapisDoPrava(strom * Otec, prefix * vstup, int index){
     strom * syn = malloc(sizeof(strom));
     syn->cislo = NULL;
@@ -70,7 +71,7 @@ void ZapisDoPrava(strom * Otec, prefix * vstup, int index){
     return;
 }
 
-
+// zde se jedná o èásteènou rekurzi, která byužívá toho že se lze vracet na svého otce. Rekurzivnì staví strom.
 void ZapisDoLeva(strom * Otec, prefix * vstup, int index){
     strom * syn = malloc(sizeof(strom));
     syn->cislo = NULL;
@@ -99,7 +100,7 @@ void ZapisDoLeva(strom * Otec, prefix * vstup, int index){
     return;
 
 }
-
+//konroluje jestli neni zadano prazdne pole. A naslednì inicializuje stavbu stromu.
 void UkladaniDoStromu(prefix * vstup, strom * hlava, int konec, int index){
       if(index + 1 <= konec){
         if(hlava->znamenko == NULL){
@@ -110,6 +111,7 @@ void UkladaniDoStromu(prefix * vstup, strom * hlava, int konec, int index){
         }
     return;
 }
+//vypisuje rekurzivnì levé a pravé syny
 void vypisL(strom * hlava){
     if(hlava->cislo == NULL){
         vypisL(hlava->LSyn);
@@ -122,7 +124,7 @@ void vypisL(strom * hlava){
     }
 
 }
-
+//vypisuje rekurzivnì levé syny stromu
 void vypisR(strom * hlava){
     if(hlava->cislo == NULL){
        vypisL(hlava->LSyn);
@@ -134,7 +136,7 @@ void vypisR(strom * hlava){
         printf(" ) ");
     }
 }
-
+//inicializuje vypsani infixu ze stromu
 void infix(strom * hlava){
     vypisL(hlava->LSyn);
     printf(" %c ", hlava->znamenko);
@@ -144,6 +146,8 @@ void infix(strom * hlava){
 
 int main()
 {
+
+    /* Editace vstupu probíhá zde. Staèí do složených závorek zadat vstup v pøíslušném tvaru.*/
     char vstupniData[] = {'-','+','6','5','/','6','-','6','3'};
 
 
