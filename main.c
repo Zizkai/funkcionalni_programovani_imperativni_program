@@ -101,19 +101,18 @@ void ZapisDoLeva(strom * Otec, prefix * vstup, int index){
 
 }
 //konroluje jestli neni zadano prazdne pole. A naslednì inicializuje stavbu stromu.
-void UkladaniDoStromu(prefix * vstup, strom * hlava, int konec, int index){
-      if(index + 1 <= konec){
-        if(hlava->znamenko == NULL){
-            hlava->znamenko = vstup->znamenko;
-        }
-        int a = index + 1;
-        ZapisDoLeva(hlava, vstup, a);
+void UkladaniDoStromu(prefix * vstup, strom * hlava, int konec){
+
+      if(konec != 0){
+        hlava->znamenko = vstup->znamenko;
+        ZapisDoLeva(hlava, vstup, 1);
         }
     return;
 }
 //vypisuje rekurzivnì levé a pravé syny
 void vypisL(strom * hlava){
     if(hlava->cislo == NULL){
+        printf(" ( ");
         vypisL(hlava->LSyn);
         printf("%c", hlava->znamenko);
         vypisR(hlava->PSyn);
@@ -130,6 +129,7 @@ void vypisR(strom * hlava){
        vypisL(hlava->LSyn);
        printf("%c", hlava->znamenko);
        vypisR(hlava->PSyn);
+       printf(" ) ");
     }
     else{
         printf(" %d ", hlava->cislo);
@@ -141,7 +141,6 @@ void infix(strom * hlava){
     vypisL(hlava->LSyn);
     printf(" %c ", hlava->znamenko);
     vypisR(hlava->PSyn);
-    printf(")");
 }
 
 int main()
@@ -155,14 +154,13 @@ int main()
     int konec = sizeof(vstupniData)/sizeof(char);
     prefix * VstupniData;
     VstupniData = poleDoPrefix(vstupniData, konec);
-    int index = 0;
     strom * hlava = malloc(sizeof(strom));
     hlava->cislo = NULL;
     hlava->LSyn = NULL;
     hlava->PSyn = NULL;
     hlava->znamenko = NULL;
     hlava->Otec = NULL;
-    UkladaniDoStromu(VstupniData, hlava, konec, index);
+    UkladaniDoStromu(VstupniData, hlava, konec);
     infix(hlava);
 
     return 0;
